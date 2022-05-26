@@ -46,4 +46,15 @@ public class NoteController {
         }
         return listOfNotes;
     }
+
+    @DeleteMapping("/delete")
+    public Object deleteNote(@RequestParam(value = "noteId", defaultValue = "1")Long noteId) {
+        Optional<Note> noteOp = noteRepository.findById(noteId);
+        if(noteOp.isPresent()) {
+            Note note = noteOp.get();
+            noteRepository.delete(note);
+            return note;
+        }
+        return "No note with the given noteId found";
+    }
 }
