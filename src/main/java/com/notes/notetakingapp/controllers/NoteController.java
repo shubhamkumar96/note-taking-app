@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @RestController @RequestMapping(path = "/api")
@@ -26,8 +28,8 @@ public class NoteController {
     }
 
     @PostMapping("/note")
-    public Note addNote(){
-        Note note = new Note("Test Note", "Test Description", ZonedDateTime.ofInstant(new Date().toInstant(), ZoneId.systemDefault()));
+    public Note addNote(@RequestBody Note note){
+        note.setDateTime(ZonedDateTime.ofInstant(new Date().toInstant(), ZoneId.systemDefault()));
         noteRepository.save(note);
         return note;
     }
@@ -35,5 +37,14 @@ public class NoteController {
     @GetMapping("/notes")
     public Iterable<Note> getAllNotes() {
         return noteRepository.findAll();
+    }
+
+    @GetMapping("/search")
+    public Iterable<Note> searchNotesByQueryString(@RequestParam(value = "q", defaultValue = "test") String queryString) {
+        List<Note> listOfNotes = noteRepository.findByBodyContainingOrTitleContaining(queryString, queryString);
+        if(listOfNotes.size() == 0) {
+            System.out.println("No Notes Found" + queryString);
+        }
+        return listOfNotes;
     }
 }
