@@ -20,4 +20,10 @@ public class Note {
     private String title;
     private String body;
     private ZonedDateTime dateTime;
+
+    public Note(String title, String body, ZonedDateTime dateTime) {
+        this.title = title;
+        this.body = body;
+        this.dateTime = dateTime;
+    }
 }
