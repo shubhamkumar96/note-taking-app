@@ -1,5 +1,6 @@
 package com.notes.notetakingapp.kafka;
 
+import com.notes.notetakingapp.models.Note;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
@@ -7,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class KafkaListeners {
 
     @KafkaListener(topics = "noteupdate", groupId = "groupId")
-    void listener(String data) {
-        System.out.println("Listener received data: " + data);
+    void listener(Note note) {
+        System.out.println("Listener received data: " + note);
     }
 }
