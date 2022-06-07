@@ -1,22 +1,15 @@
 package com.notes.notetakingapp.controllers;
 
 import com.notes.notetakingapp.models.Note;
-import com.notes.notetakingapp.repositories.NoteRepository;
 import com.notes.notetakingapp.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @RestController @RequestMapping(path = "/api")
 public class NoteController {
 
-    private NoteRepository noteRepository;
+    @Autowired
     private NoteService noteService;
 
     @GetMapping("/note")
@@ -50,7 +43,7 @@ public class NoteController {
     }
 
     @PutMapping("/updatenotekafka")
-    public List<Note> updateNoteKafka(@RequestBody Note newNote) {
-        return noteService.updateNoteKafka(newNote);
+    public void updateNoteKafka(@RequestBody Note newNote) {
+        noteService.updateNoteKafkaAsync(newNote);
     }
 }
